@@ -19,6 +19,8 @@ namespace Conduit.Infrastructure
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
         public DbSet<ArticleTag> ArticleTags { get; set; }
         public DbSet<ArticleFavorite> ArticleFavorites { get; set; }
         public DbSet<FollowedPeople> FollowedPeople { get; set; }
