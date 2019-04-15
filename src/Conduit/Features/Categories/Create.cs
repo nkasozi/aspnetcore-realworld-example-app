@@ -23,11 +23,10 @@ namespace Conduit.Features.Categories
 
             public int ParentCategory { get; set; }
 
-            public string[] ArticlesList { get; set; }
 
             public CategoryData()
             {
-                ArticlesList = new string[] { };
+                
 
             }
         }
@@ -68,16 +67,6 @@ namespace Conduit.Features.Categories
 
             public async Task<CategoryEnvelope> Handle(Command message, CancellationToken cancellationToken)
             {
-                //check if list of articles exists
-                foreach (var articleId in message.Category?.ArticlesList)
-                {
-                    //check if parent category exists
-                    if (!_context.Articles.Any(x => x.ArticleId == message.Category.ParentCategory))
-                    {
-                        string msg = $"Article with ID [{message.Category.ParentCategory}] not Found";
-                        throw new RestException(HttpStatusCode.NotFound, msg);
-                    }
-                }
 
                 //check if parent category exists
                 if ((message.Category.ParentCategory != 0 && !_context.Categories.Any(x => x.CategoryId == message.Category.ParentCategory)))
@@ -95,8 +84,6 @@ namespace Conduit.Features.Categories
                     UpdatedAt = DateTime.UtcNow,
                     CategoryDescription = message.Category.Description,
                     CategoryName = message.Category.Name,
-                    
-
                 };
 
                 await _context.Categories.AddAsync(Category, cancellationToken);

@@ -9,7 +9,7 @@ namespace Conduit.IntegrationTests.Features.Users
     public static class UserHelpers
     {
         public static readonly string DefaultUserName = "username";
-
+        public static UserEnvelope UserEnvelope;
         /// <summary>
         /// creates a default user to be used in different tests
         /// </summary>
@@ -17,6 +17,11 @@ namespace Conduit.IntegrationTests.Features.Users
         /// <returns></returns>
         public static async Task<User> CreateDefaultUser(SliceFixture fixture)
         {
+            if (UserEnvelope != null)
+            {
+                return UserEnvelope.User;
+            }
+
             var command = new Create.Command()
             {
                 User = new Create.UserData()
@@ -27,8 +32,8 @@ namespace Conduit.IntegrationTests.Features.Users
                 }
             };
 
-            var commandResult = await fixture.SendAsync(command);
-            return commandResult.User;
+            UserEnvelope = await fixture.SendAsync(command);
+            return UserEnvelope.User;
         }
     }
 }
